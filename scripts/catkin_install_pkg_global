@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ $# -ne 1 ]
+then
+    echo "usage: ${0##*/} <pkg-name>"
+    exit
+fi
+
+catkin_make install -DCMAKE_BUILD_TYPE=Release --only-pkg-with-deps $1 -DCMAKE_INSTALL_PREFIX=/opt/ros/$ROS_DISTRO
