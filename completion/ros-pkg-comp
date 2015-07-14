@@ -2,13 +2,13 @@ _ros_pkg_comp()
 {
    #local cmd="${1##*/}"
    local word=${COMP_WORDS[COMP_CWORD]} #last word (to complete)
-   #local line=${COMP_LINE}              #complete line 
-	   
+   #local line=${COMP_LINE}              #complete line
+
    #prove if src exist
    local list=( $(find  . -maxdepth 1 -type d -printf '%P\n') )
    local foundsrc="false"
    #search in list for src
-   for((i=1;i<=${#list[@]};i++))
+   for((i=0;i<=${#list[@]};i++))
    do
       if [ "${list[i]}" == "src" ]; then
          #echo "test"
@@ -16,8 +16,8 @@ _ros_pkg_comp()
          break
       fi
    done
-   
-   
+
+
    #add final completion
    if [ $foundsrc == "true" ]; then
       list=( $(find  src/ -maxdepth 1 -type d -printf '%P\n') )
@@ -25,7 +25,7 @@ _ros_pkg_comp()
    else
       COMPREPLY=( $(compgen -W '' "${word}") ) #comgen -W "'word' 'list'" 'word'
    fi
-     
+
 } &&
 complete -F _ros_pkg_comp catkin_make_pkg
 
