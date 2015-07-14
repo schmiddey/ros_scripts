@@ -20,8 +20,25 @@ _ros_pkg_comp()
 
    #add final completion
    if [ $foundsrc == "true" ]; then
-      list=( $(find  src/ -maxdepth 1 -type d -printf '%P\n') )
-      COMPREPLY=( $(compgen -W '${list[@]}' "${word}") ) #comgen -W "'word' 'list'" 'word'
+      list=( $(find  src/ -maxdepth 5 -type d -printf '%P\n') )
+      final_list=()
+      #prove if package.xml exist
+      for((i=0;i<=${#list[@]};i++))
+      do
+         if [[ -e "src/${list[i]}/package.xml" ]]; then
+            #extract folder name only
+            tmp_list=()
+            tmp_list=$(echo ${list[i]} | tr "/" "\n")
+            tmp_word=""
+            for x in $tmp_list
+            do
+               tmp_word=$x
+            done
+            #append list
+            final_list+=(${tmp_word})
+         fi
+      done
+      COMPREPLY=( $(compgen -W '${final_list[@]}' "${word}") ) #comgen -W "'word' 'list'" 'word'
    else
       COMPREPLY=( $(compgen -W '' "${word}") ) #comgen -W "'word' 'list'" 'word'
    fi
